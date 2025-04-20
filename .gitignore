@@ -4,7 +4,6 @@ Pods/
 xcuserdata
 
 # additional ignores that will save us time
-build/
 *.pbxuser
 !default.pbxuser
 *.mode1v3

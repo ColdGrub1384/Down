@@ -1,4 +1,4 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.3
 
 import PackageDescription
 
@@ -7,31 +7,58 @@ let package = Package(
     platforms: [
         .macOS("10.11"),
         .iOS("9.0"),
-        .tvOS("9.0"),
-        .watchOS("2.0"),
+        .tvOS("9.0")
     ],
     products: [
-    .library(
-        name: "Down",
-        targets: ["Down"]),
+        .library(
+            name: "Down",
+            targets: ["Down"]
+        )
     ],
-    dependencies: [],
     targets: [
         .target(
             name: "libcmark",
             dependencies: [],
-            path: "Source/cmark",
-            exclude: ["include"],
-            publicHeadersPath: "./"),
+            path: "Sources/cmark",
+            exclude: [
+              "include",
+              "case_fold_switch.inc",
+              "entities.inc",
+              "COPYING"
+            ],
+            publicHeadersPath: "./"
+        ),
         .target(
             name: "Down",
             dependencies: ["libcmark"],
-            path: "Source/",
-            exclude: ["cmark", "Down.h"]),
+            path: "Sources/Down",
+            exclude: ["Down.h"],
+          resources: [
+            .copy("Resources/DownView.bundle"),
+            .copy("Resources/DownView (macOS).bundle"),
+          ]
+        ),
         .testTarget(
             name: "DownTests",
             dependencies: ["Down"],
-            path: "Tests/",
-            exclude: ["Fixtures", "DownViewTests.swift"]),
-    ]
+            path: "Tests/DownTests",
+            exclude: [
+                "AST/VisitorTests.swift",
+                "AST/__Snapshots__",
+                "DownViewTests.swift",
+                "Fixtures",
+                "Styler/__Snapshots__",
+                "Styler/BlockQuoteStyleTests.swift",
+                "Styler/CodeBlockStyleTests.swift",
+                "Styler/DownDebugLayoutManagerTests.swift",
+                "Styler/HeadingStyleTests.swift",
+                "Styler/LinkStyleTests.swift",
+                "Styler/InlineStyleTests.swift",
+                "Styler/ListItemStyleTests.swift",
+                "Styler/StylerTestSuite.swift",
+                "Styler/ThematicBreakSyleTests.swift"
+            ]
+        )
+    ],
+    swiftLanguageVersions: [.v5]
 )
